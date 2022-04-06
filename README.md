@@ -4,6 +4,7 @@ A ROS1 Node to integrate the DualSense 5 (PS5) Controller into the ROS ecosystem
 
 # TODO
 
+* Add python code
 * How to install
 * Topic Description
 * Button Mapping
