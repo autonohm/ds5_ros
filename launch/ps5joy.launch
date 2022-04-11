@@ -1,0 +1,9 @@
+<launch>
+  <node pkg="ps5joy" type="ps5joy_node.py" name="ps5joy_node" output="screen">
+    <param name="scale_linear_x"              value="1.0"   />
+    <param name="scale_linear_y"              value="1.0"   />
+    <param name="scale_angular_z"             value="3.0"   />
+    <param name="twist_pub_topic"             value="cmd_vel_joy"   />
+    <param name="arm_sub_topic"		      value="joy/set_feedback"   />
+  </node>
+</launch>
