@@ -15,6 +15,7 @@ Install the package from [pypi](https://pypi.org/project/pydualsense/).
 pip install pydualsense
 ```
 
+To run the package node
 ```bash
 sudo su root
 ```
