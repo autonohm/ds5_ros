@@ -66,21 +66,21 @@ Other effects and enumerations could be found under pydualsense.py and enums.py
 
 # Topic
 
-##Publisher
+## Publisher
 
 Control robot:
 - Topic: cmd_vel
-- Message type: [geometry_msgs/Twist/](http://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/Twist.html/)
+- Message type: [geometry_msgs/Twist](http://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/Twist.html)
 
 Control gripper:
 - Topic: ???
 - Message type: ???
 
-##Subscriber
+## Subscriber
 
 Receive feedback from roboter arm:
 - Topic: joy/set_feedback
-- Message type: [JoyFeedbackArray/](http://docs.ros.org/en/api/sensor_msgs/html/msg/JoyFeedbackArray.html/)
+- Message type: [JoyFeedbackArray](http://docs.ros.org/en/api/sensor_msgs/html/msg/JoyFeedbackArray.html)
 
 # Button Mapping
 
@@ -127,4 +127,4 @@ Other controll function like touch pad and option buttons can be found in pydual
 
 # Credits
 
-[https://github.com/flok/pydualsense/](https://github.com/flok/pydualsense/)
+[https://github.com/flok/pydualsense](https://github.com/flok/pydualsense)
