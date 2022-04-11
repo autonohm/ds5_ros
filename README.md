@@ -83,29 +83,43 @@ Receive feedback from roboter arm:
 
 # Button Mapping
 
-BUTTON_ACTION_CROSS     = ds.state.cross
+BUTTON_ACTION_CROSS     = ds.state.cross 
+
 BUTTON_ACTION_CIRCLE     = ds.state.circle
+
 BUTTON_ACTION_TRIANGLE     = ds.state.triangle
+
 BUTTON_ACTION_SQUARE     = ds.state.square
 
 BUTTON_CROSS_UP     = ds.state.DpadUp
+
 BUTTON_CROSS_DOWN     = ds.state.DpadDown
+
 BUTTON_CROSS_LEFT     = ds.state.DpadLeft
+
 BUTTON_CROSS_RIGHT     = ds.state.DpadRight
 
 AXIS_REAR_LEFT_2    = ds.state.L2 (0 - 255)
+
 AXIS_REAR_RIGHT_2    = ds.state.R2 (0 - 255)
+
 BUTTON_REAR_LEFT_2    = ds.state.L2Btn
+
 BUTTON_REAR_RIGHT_2    = ds.state.R2Btn
+
 BUTTON_REAR_LEFT_1    = ds.state.L1
+
 BUTTON_REAR_RIGHT_1    = ds.state.R1
 
 
 //Problem (Sometimes not zero by uncontrolled Joy)
 
 AXIS_STICK_LEFT_RIGHTWARDS     = ds.state.LX (-127 - 128)
+
 AXIS_STICK_LEFT_DOWNWARDS    = ds.state.LY (-127 - 128)
+
 AXIS_STICK_RIGHT_RIGHTWARDS    = ds.state.RX (-127 - 128)
+
 AXIS_STICK_RIGHT_DOWNWARDS    = ds.state.RY (-127 - 128)
 
 Other controll function like touch pad and option buttons can be found in pydualsense.py
