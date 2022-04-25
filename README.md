@@ -90,24 +90,37 @@ Joy feedback
 ## Button
 
 buttons[0] = cross
+
 buttons[1] = circle
+
 buttons[2] = triangle 
+
 buttons[3] = square
 
 buttons[13] = cross up
+
 buttons[16] = cross right
+
 buttons[14] = cross down
+
 buttons[15] = cross left
 
 buttons[6] = rear left 2 button
+
 buttons[7] = rear right 2 button
+
 buttons[4] = rear left 1
+
 buttons[5] = rear right 1
+
 buttons[8] = stick left button
+
 buttons[9] = stick right button
 
 buttons[10] = PS
+
 buttons[11] = share
+
 buttons[12] = options
 
 buttons[17] = track pad button
@@ -117,10 +130,15 @@ buttons[17] = track pad button
 ## Axes
 
 joy_msg.axes[0] = stick left    leftward (-128 -> 127, default ~0)
+
 joy_msg.axes[1] = stick left    upward (-128 -> 127, default ~0)
+
 joy_msg.axes[2] = stick right   leftward (-128 -> 127, default ~0)
+
 joy_msg.axes[3] = stick right   upward (-128 -> 127, default ~0)
+
 joy_msg.axes[4] = rear left 2   pushDown (0 -> 255, default = 0)
+
 joy_msg.axes[5] = rear right 2  pushDown (0 -> 255, default = 0)
 
 
