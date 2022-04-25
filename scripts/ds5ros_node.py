@@ -105,12 +105,10 @@ class Ds5Ros():
         while not rospy.is_shutdown():
             self.joy_publish()
             rate.sleep()
+        self.dualsense.close()
 
-def main():
+if __name__== '__main__':
     rospy.init_node("ds5ros_node")
     ds5 = Ds5Ros()
     ds5.main_loop()
-
-if __name__== '__main__':
-    main()
    
