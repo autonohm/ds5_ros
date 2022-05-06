@@ -40,9 +40,11 @@ class Ds5Ros():
         for feedback in msg.array: #not iterable
             #set continuous force on left rear button
             #change this part if received message intensity is from 0 - 1.0
-            if feedback.intensity > 255 and feedback.intensity <0:
-                raise Exception('intensity muss in range 0 - 255')
+            if feedback.intensity > 1.0 and feedback.intensity <0.0:
+                raise Exception('intensity muss in range 0.0 - 1.0')
                 continue
+            else:
+                feedback.intensity = feedback.intensity * 255.0
             
             #intensity muss be an integer
             if feedback.type == 1 and feedback.id == 0:
@@ -91,12 +93,13 @@ class Ds5Ros():
         for i in range(6):
             joy_msg.axes.append(0)
 
-        joy_msg.axes[0] = -1 * self.dualsense.state.LX + 1  #Leftward (-128 -> 127, default ~0)
-        joy_msg.axes[1] = -1 * self.dualsense.state.LY + 1  #Upward (-128 -> 127, default ~0)
-        joy_msg.axes[2] = -1 * self.dualsense.state.RX + 1  #Leftward (-128 -> 127, default ~0)
-        joy_msg.axes[3] = -1 * self.dualsense.state.RY + 1  #Upward (-128 -> 127, default ~0)
-        joy_msg.axes[4] = self.dualsense.state.L2           #PushDown (0 -> 255, default = 0)
-        joy_msg.axes[5] = self.dualsense.state.R2           #PushDown (0 -> 255, default = 0)
+        # change value by Axes from 0.0 -> 1.0
+        joy_msg.axes[0] = (-1 * self.dualsense.state.LX + 128)/255.0    #Leftward   (0.0 -> 1.0, default ~0)
+        joy_msg.axes[1] = (-1 * self.dualsense.state.LY + 128)/255.0    #Upward     (0.0 -> 1.0, default ~0)
+        joy_msg.axes[2] = (-1 * self.dualsense.state.RX + 128)/255.0    #Leftward   (0.0 -> 1.0, default ~0)
+        joy_msg.axes[3] = (-1 * self.dualsense.state.RY + 128)/255.0    #Upward     (0.0 -> 1.0, default ~0)
+        joy_msg.axes[4] = self.dualsense.state.L2 /255.0                #PushDown   (0.0 -> 1.0, default = 0)
+        joy_msg.axes[5] = self.dualsense.state.R2 /255.0
 
         self.joy_pub.publish(joy_msg)
 
