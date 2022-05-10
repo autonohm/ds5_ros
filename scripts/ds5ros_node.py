@@ -40,7 +40,7 @@ class Ds5Ros():
         for feedback in msg.array: #not iterable
             #set continuous force on left rear button
             #change this part if received message intensity is from 0 - 1.0
-            if feedback.intensity > 1.0 and feedback.intensity <0.0:
+            if feedback.intensity > 1.0 or feedback.intensity <0.0:
                 raise Exception('intensity muss in range 0.0 - 1.0')
                 continue
             else:
