@@ -94,12 +94,12 @@ class Ds5Ros():
             joy_msg.axes.append(0)
 
         # change value by Axes from 0.0 -> 1.0
-        joy_msg.axes[0] = (-1 * self.dualsense.state.LX + 128)/255.0    #Leftward   (0.0 -> 1.0, default ~0)
-        joy_msg.axes[1] = (-1 * self.dualsense.state.LY + 128)/255.0    #Upward     (0.0 -> 1.0, default ~0)
-        joy_msg.axes[2] = (-1 * self.dualsense.state.RX + 128)/255.0    #Leftward   (0.0 -> 1.0, default ~0)
-        joy_msg.axes[3] = (-1 * self.dualsense.state.RY + 128)/255.0    #Upward     (0.0 -> 1.0, default ~0)
+        joy_msg.axes[0] = (-1 * self.dualsense.state.LX )/128.0         #Leftward   (-1.0 -> 1.0, default ~0.0)
+        joy_msg.axes[1] = (-1 * self.dualsense.state.LY )/128.0         #Upward     (-1.0 -> 1.0, default ~0.0)
+        joy_msg.axes[2] = (-1 * self.dualsense.state.RX )/128.0         #Leftward   (-1.0 -> 1.0, default ~0.0)
+        joy_msg.axes[3] = (-1 * self.dualsense.state.RY )/128.0         #Upward     (-1.0 -> 1.0, default ~0.0)
         joy_msg.axes[4] = self.dualsense.state.L2 /255.0                #PushDown   (0.0 -> 1.0, default = 0)
-        joy_msg.axes[5] = self.dualsense.state.R2 /255.0
+        joy_msg.axes[5] = self.dualsense.state.R2 /255.0                #PushDown   (0.0 -> 1.0, default = 0)
 
         self.joy_pub.publish(joy_msg)
 

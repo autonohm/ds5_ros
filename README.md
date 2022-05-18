@@ -129,17 +129,17 @@ buttons[17] = track pad button
 
 ## Axes
 
-joy_msg.axes[0] = stick left    leftward (-128 -> 127, default ~0)
+joy_msg.axes[0] = stick left    leftward (-1.0 -> 1.0, default ~0.0)
 
-joy_msg.axes[1] = stick left    upward (-128 -> 127, default ~0)
+joy_msg.axes[1] = stick left    upward (-1.0 -> 1.0, default ~0.0)
 
-joy_msg.axes[2] = stick right   leftward (-128 -> 127, default ~0)
+joy_msg.axes[2] = stick right   leftward (-1.0 -> 1.0, default ~0.0)
 
-joy_msg.axes[3] = stick right   upward (-128 -> 127, default ~0)
+joy_msg.axes[3] = stick right   upward (-1.0 -> 1.0, default ~0.0)
 
-joy_msg.axes[4] = rear left 2   pushDown (0 -> 255, default = 0)
+joy_msg.axes[4] = rear left 2   pushDown (0.0 -> 1.0, default = 0)
 
-joy_msg.axes[5] = rear right 2  pushDown (0 -> 255, default = 0)
+joy_msg.axes[5] = rear right 2  pushDown (0.0 -> 1.0, default = 0)
 
 
 Other controll function like touch pad can be found in pydualsense.py
