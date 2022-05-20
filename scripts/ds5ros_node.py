@@ -36,7 +36,7 @@ class Ds5Ros():
     '''
 
     def set_feedback(self, msg):
-        print(msg)
+        #print(msg)
         for feedback in msg.array: #not iterable
             #set continuous force on left rear button
             #change this part if received message intensity is from 0 - 1.0
@@ -61,7 +61,7 @@ class Ds5Ros():
     def joy_publish(self):
         joy_msg = Joy()
 
-        print("in joy_publish")
+        #print("in joy_publish")
         
         for i in range(18):
             joy_msg.buttons.append(0)
@@ -106,6 +106,7 @@ class Ds5Ros():
     def main_loop(self):
         rate = rospy.Rate(self.noderate)
         while not rospy.is_shutdown():
+            rospy.loginfo_throttle(2, "DS5_Ros is alive!") 
             self.joy_publish()
             rate.sleep()
         self.dualsense.close()
