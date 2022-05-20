@@ -11,10 +11,15 @@ from pydualsense import *
 
 class Ds5Ros():
     def __init__(self):
+
+        self.logging_prefix = "DS5_ROS: "
+        
+        # 0 is startup, 1 is running
+        self.node_state = 0
+
         # create dualsense
         self.dualsense = pydualsense()
-        # find device and initialize
-        self.dualsense.init()
+
 
         self.noderate = rospy.get_param("noderate", 50.0)
 
@@ -22,6 +27,10 @@ class Ds5Ros():
         self.joy_sub_topic = rospy.get_param("joy_sub", "joy/set_feedback")
         # send signal to robot_joy_control node
         self.joy_pub_topic = rospy.get_param("joy_pub", "joy")
+
+        # controller is not straight zero for the axis.. prevent tiny robot movements 
+        self.deadzone = rospy.get_param("deadzone", 0.05)
+
 
         self.joy_sub = rospy.Subscriber(self.joy_sub_topic, JoyFeedbackArray, self.set_feedback, queue_size= 10)
         self.joy_pub = rospy.Publisher(self.joy_pub_topic, Joy, queue_size = 1)
@@ -41,7 +50,7 @@ class Ds5Ros():
             #set continuous force on left rear button
             #change this part if received message intensity is from 0 - 1.0
             if feedback.intensity > 1.0 or feedback.intensity <0.0:
-                raise Exception('intensity muss in range 0.0 - 1.0')
+                rospy.logerr(self.logging_prefix + 'intensity must be in range 0.0 - 1.0')
                 continue
             else:
                 feedback.intensity = feedback.intensity * 255.0
@@ -101,13 +110,37 @@ class Ds5Ros():
         joy_msg.axes[4] = self.dualsense.state.L2 /255.0                #PushDown   (0.0 -> 1.0, default = 0)
         joy_msg.axes[5] = self.dualsense.state.R2 /255.0                #PushDown   (0.0 -> 1.0, default = 0)
 
+        for val in range(6):
+            if(abs(joy_msg.axes[val]) < self.deadzone):
+                joy_msg.axes[val] = 0.0
+
         self.joy_pub.publish(joy_msg)
 
     def main_loop(self):
         rate = rospy.Rate(self.noderate)
+
+        ### initialize controller if possible, else wait
+        
+        # find device and initialize
         while not rospy.is_shutdown():
-            rospy.loginfo_throttle(2, "DS5_Ros is alive!") 
-            self.joy_publish()
+            if self.node_state is 0:
+                try:
+                    self.dualsense.init()
+                except:
+                    rospy.logwarn_throttle(2, "Cannot initialize controller!") 
+                else:
+                    # set rgb led to green
+                    self.node_state = 1
+            
+            elif self.node_state is 1:
+                rospy.loginfo_throttle(2, "DS5_Ros is alive!") 
+                # if error -> node_state = 0
+                try:
+                    self.joy_publish()
+                except IOError:
+                    rospy.logerr("Lost connection! Go back to init!")
+                    self.node_state = 0
+            
             rate.sleep()
         self.dualsense.close()
 
