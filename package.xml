@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>ds5ros</name>
+  <name>ds5_ros</name>
   <version>0.0.0</version>
   <description>The ds5ros package</description>
 
