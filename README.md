@@ -18,6 +18,7 @@ pip install pydualsense
 ## Device Access
 
 To allow linux to access the controller, you will need to set the device permissions.
+
 You can either do this manually by typing
 
 ```bash
@@ -30,10 +31,12 @@ OR
 sudo chmod -R 777 /dev
 ```
 
-to run the node, or you can add the provided UDEV rule to your rules.d folder:
+to run the node, 
+
+OR you can add the provided UDEV rule to your rules.d folder to permanently enable this for your system:
 
 ```bash
-sudo cp YOUR_PATH/udev/99-dualsense.rules /etc/udev/rules.d
+sudo cp YOUR_PATH/ds5_ros/udev/99-dualsense.rules /etc/udev/rules.d
 ```
 
 
