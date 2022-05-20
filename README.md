@@ -15,7 +15,11 @@ Install the package from [pypi](https://pypi.org/project/pydualsense/).
 pip install pydualsense
 ```
 
-To run the package node
+## Device Access
+
+To allow linux to access the controller, you will need to set the device permissions.
+You can either do this manually by typing
+
 ```bash
 sudo su root
 ```
@@ -24,6 +28,12 @@ OR
 
 ```bash
 sudo chmod -R 777 /dev
+```
+
+to run the node, or you can add the provided UDEV rule to your rules.d folder:
+
+```bash
+sudo cp YOUR_PATH/udev/99-dualsense.rules /etc/udev/rules.d
 ```
 
 
