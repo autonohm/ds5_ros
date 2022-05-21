@@ -35,6 +35,9 @@ class Ds5Ros():
         self.joy_sub = rospy.Subscriber(self.joy_sub_topic, JoyFeedbackArray, self.set_feedback, queue_size= 10)
         self.joy_pub = rospy.Publisher(self.joy_pub_topic, Joy, queue_size = 1)
 
+        self.maskR = 0xFF0000
+        self.maskG = 0x00FF00
+        self.maskB = 0x0000FF
     '''
     JoyFeedback Struct
     TYPE_LED = 0 | TYPE_RUMBLE = 1 (use also for feedback on rear button) | TYPE_BUZZER = 2
@@ -47,13 +50,26 @@ class Ds5Ros():
     def set_feedback(self, msg):
         #print(msg)
         for feedback in msg.array: #not iterable
-            #set continuous force on left rear button
-            #change this part if received message intensity is from 0 - 1.0
+            # type = 0: LED control
+            # RGB (24bit) is sent as float32 -> can almost be covered by 23 mantissa  
+            if feedback.type == 0:
+                
+                int_intensity = int(feedback.intensity)
+                light_red = (int_intensity & self.maskR) >> 16
+                light_green = (int_intensity & self.maskG) >> 8
+                light_blue = (int_intensity & self.maskB)
+
+                self.dualsense.light.setColorI(light_red,light_green,light_blue)
+                continue
+            
+            #other type
             if feedback.intensity > 1.0 or feedback.intensity <0.0:
                 rospy.logerr(self.logging_prefix + 'intensity must be in range 0.0 - 1.0')
                 continue
             else:
                 feedback.intensity = feedback.intensity * 255.0
+
+            
             
             #intensity muss be an integer
             if feedback.type == 1 and feedback.id == 0:
@@ -68,6 +84,7 @@ class Ds5Ros():
                 self.dualsense.triggerR.setForce(1, int(feedback.intensity) )
 
     def joy_publish(self):
+        # try:
         joy_msg = Joy()
 
         #print("in joy_publish")
@@ -115,6 +132,8 @@ class Ds5Ros():
                 joy_msg.axes[val] = 0.0
 
         self.joy_pub.publish(joy_msg)
+        # except:
+        #     print("catch error")
 
     def main_loop(self):
         rate = rospy.Rate(self.noderate)
@@ -123,24 +142,31 @@ class Ds5Ros():
         
         # find device and initialize
         while not rospy.is_shutdown():
-            if self.node_state is 0:
+            if self.node_state == 0:
                 try:
                     self.dualsense.init()
                 except:
-                    rospy.logwarn_throttle(2, "Cannot initialize controller!") 
+                    rospy.logwarn_throttle(2, "Cannot initialize controller!")
                 else:
                     # set rgb led to green
+                    self.dualsense.light.setColorI(0,255,0)
                     self.node_state = 1
             
-            elif self.node_state is 1:
-                rospy.loginfo_throttle(2, "DS5_Ros is alive!") 
+            elif self.node_state == 1:
                 # if error -> node_state = 0
                 try:
-                    self.joy_publish()
-                except IOError:
-                    rospy.logerr("Lost connection! Go back to init!")
-                    self.node_state = 0
-            
+                    #Add new attribute cable_connection in dualsense
+                    #Init cable_connection = True
+                    #Catch IOError in dualsense.writeReport and set cable_connection = False
+                    if self.dualsense.cable_connection:
+                        rospy.loginfo_throttle(2, "DS5_Ros is alive!" )
+                        self.joy_publish()
+                    else:
+                        rospy.logerr("Lost connection! Go back to init!")
+                        self.node_state = 0 
+                except:
+                    pass
+
             rate.sleep()
         self.dualsense.close()
 
