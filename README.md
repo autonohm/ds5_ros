@@ -39,6 +39,32 @@ OR you can add the provided UDEV rule to your rules.d folder to permanently enab
 sudo cp YOUR_PATH/ds5_ros/udev/99-dualsense.rules /etc/udev/rules.d
 ```
 
+## Change pydualsense.py
+
+Add attribute cable_connection in function init():
+
+```python
+def init(self):
+    ...
+    self.cable_connection = True
+    ...
+```
+
+Change function writeReport() in pydualsense.py to catch the IOError when controller is disconnect to the PC
+
+```python
+def writeReport(self, outReport):
+    """
+    write the report to the device
+
+    Args:
+        outReport (list): report to be written to device
+    """
+    try:
+        self.device.write(bytes(outReport))
+    except IOError:
+        self.cable_connection = False
+```
 
 # Usage
 
@@ -56,7 +82,6 @@ Close the controller
 ```python
 ds.close() 
 ```
-
 
 ## LED
 
@@ -80,6 +105,7 @@ Set trigger mode for the buttons and control the intensity.
 ds.TriggerR.setMode(TriggerModes.Rigid)
 ds.TriggerR.setForce(1, 255)
 ```
+
 ## Other
 
 Other effects and enumerations could be found under pydualsense.py and enums.py
@@ -156,6 +182,10 @@ joy_msg.axes[5] = rear right 2  pushDown (0.0 -> 1.0, default = 0)
 
 
 Other controll function like touch pad can be found in pydualsense.py
+
+# Header for C++
+
+HeaderFile: rgbIntToFloat.h with function rgbIntToFloat(int, int, int) to change RGB 3 * 8 bit to float32 value
 
 # Credits
 
